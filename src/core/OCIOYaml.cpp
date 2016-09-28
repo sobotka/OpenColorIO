@@ -1522,14 +1522,14 @@ OCIO_NAMESPACE_ENTER
                     }
                     c->setDefaultLumaCoefs(&val[0]);
                 }
-                else if(key == "reference_chromaticities")
+                else if(key == "reference_values")
                 {
                     std::vector<float> val;
                     load(second, val);
                     if (val.size() != 12)
                     {
                         std::ostringstream os;
-                        os << "'reference_chromaticities' field must be 12 ";
+                        os << "'reference_values' field must be 12 ";
                         os << "floats. Found '" << val.size() << "'.";
                         throw Exception(os.str().c_str());
                     }
