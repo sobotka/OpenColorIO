@@ -1522,6 +1522,19 @@ OCIO_NAMESPACE_ENTER
                     }
                     c->setDefaultLumaCoefs(&val[0]);
                 }
+                else if(key == "reference_chromaticities")
+                {
+                    std::vector<float> val;
+                    load(second, val);
+                    if (val.size() != 12)
+                    {
+                        std::ostringstream os;
+                        os << "'reference_chromaticities' field must be 12 ";
+                        os << "floats. Found '" << val.size() << "'.";
+                        throw Exception(os.str().c_str());
+                    }
+                    c->setDefaultReferenceValues(&val[0]);
+                }
                 else if(key == "roles")
                 {
                     if(second.Type() != YAML::NodeType::Map)

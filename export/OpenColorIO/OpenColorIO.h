@@ -447,7 +447,25 @@ OCIO_NAMESPACE_ENTER
         //!cpp:function:: These should be normalized (sum to 1.0 exactly).
         void setDefaultLumaCoefs(const float * rgb);
         
-        
+        ///////////////////////////////////////////////////////////////////////////
+        //!rst:: .. _cfgdefault_values_section:
+        //
+        // Default Values
+        // ^^^^^^^^^^^^^^
+        //
+        // Get the default values for reference space details.
+        //
+        // .. note::
+        //    Configuration-wide set of values for the reference space.
+        //    This is useful for applications that need to leverage OCIO
+        //    for user interface elements and other areas where concrete
+        //    information about the reference space is required.
+
+        //!cpp:function::
+        void getDefaultReferenceValues(float * values) const;
+        //!cpp:function:: XYZ to RGB and white value specification coefficents.
+        void setDefaultReferenceValues(const float * values);
+
         ///////////////////////////////////////////////////////////////////////////
         //!rst:: .. _cflooka_section:
         // 

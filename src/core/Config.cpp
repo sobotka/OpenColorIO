@@ -70,7 +70,22 @@ OCIO_NAMESPACE_ENTER
         const float DEFAULT_LUMA_COEFF_R = 0.2126f;
         const float DEFAULT_LUMA_COEFF_G = 0.7152f;
         const float DEFAULT_LUMA_COEFF_B = 0.0722f;
-        
+
+        // D65 709 primary chromaticities as XYZ with white point
+        // coefficients given as per specification
+        const float DEFAULT_REFERENCE_VALUE_R1 = 0.3935891f;
+        const float DEFAULT_REFERENCE_VALUE_G1 = 0.3652497f;
+        const float DEFAULT_REFERENCE_VALUE_B1 = 0.1916313f;
+        const float DEFAULT_REFERENCE_VALUE_R2 = 0.2124132f;
+        const float DEFAULT_REFERENCE_VALUE_G2 = 0.7010437f;
+        const float DEFAULT_REFERENCE_VALUE_B2 = 0.0865432f;
+        const float DEFAULT_REFERENCE_VALUE_R3 = 0.0187423f;
+        const float DEFAULT_REFERENCE_VALUE_G3 = 0.1119313f;
+        const float DEFAULT_REFERENCE_VALUE_B3 = 0.9581563f;
+        const float DEFAULT_REFERENCE_VALUE_WR = 0.2126f;
+        const float DEFAULT_REFERENCE_VALUE_WG = 0.7152f;
+        const float DEFAULT_REFERENCE_VALUE_WB = 0.0722f;
+
         const char * INTERNAL_RAW_PROFILE = 
         "ocio_profile_version: 1\n"
         "strictparsing: false\n"
@@ -248,6 +263,7 @@ OCIO_NAMESPACE_ENTER
         
         // Misc
         std::vector<float> defaultLumaCoefs_;
+        std::vector<float> defaultReferenceValues_;
         bool strictParsing_;
         
         mutable Sanity sanity_;
@@ -274,6 +290,20 @@ OCIO_NAMESPACE_ENTER
             defaultLumaCoefs_[0] = DEFAULT_LUMA_COEFF_R;
             defaultLumaCoefs_[1] = DEFAULT_LUMA_COEFF_G;
             defaultLumaCoefs_[2] = DEFAULT_LUMA_COEFF_B;
+
+            defaultReferenceValues_.resize(12);
+            defaultReferenceValues_[0]  = DEFAULT_REFERENCE_VALUE_R1;
+            defaultReferenceValues_[1]  = DEFAULT_REFERENCE_VALUE_G1;
+            defaultReferenceValues_[2]  = DEFAULT_REFERENCE_VALUE_B1;
+            defaultReferenceValues_[3]  = DEFAULT_REFERENCE_VALUE_R2;
+            defaultReferenceValues_[4]  = DEFAULT_REFERENCE_VALUE_G2;
+            defaultReferenceValues_[5]  = DEFAULT_REFERENCE_VALUE_B2;
+            defaultReferenceValues_[6]  = DEFAULT_REFERENCE_VALUE_R3;
+            defaultReferenceValues_[7]  = DEFAULT_REFERENCE_VALUE_G3;
+            defaultReferenceValues_[8]  = DEFAULT_REFERENCE_VALUE_B3;
+            defaultReferenceValues_[9]  = DEFAULT_REFERENCE_VALUE_WR;
+            defaultReferenceValues_[10] = DEFAULT_REFERENCE_VALUE_WG;
+            defaultReferenceValues_[11] = DEFAULT_REFERENCE_VALUE_WB;
         }
         
         ~Impl()
@@ -1254,7 +1284,22 @@ OCIO_NAMESPACE_ENTER
     }
     
     
-    
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    void Config::getDefaultReferenceValues(float * c3) const
+    {
+        memcpy(c3, &getImpl()->defaultReferenceValues_[0], 12*sizeof(float));
+    }
+
+    void Config::setDefaultReferenceValues(const float * c3)
+    {
+        memcpy(&getImpl()->defaultReferenceValues_[0], c3, 12*sizeof(float));
+
+        AutoMutex lock(getImpl()->cacheidMutex_);
+        getImpl()->resetCacheIDs();
+    }
+
     
     ///////////////////////////////////////////////////////////////////////////
     
