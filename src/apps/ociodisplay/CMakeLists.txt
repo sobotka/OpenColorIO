@@ -11,6 +11,7 @@ set(SOURCES
 	main.cpp
 )
 
+set(CMAKE_CXX_STANDARD 11)
 add_executable(ociodisplay ${SOURCES})
 
 if(NOT BUILD_SHARED_LIBS)
